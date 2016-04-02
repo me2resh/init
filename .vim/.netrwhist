@@ -1,4 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/coder/.tmux'
 let g:netrw_dirhist_2='/Users/coder/Projects/Staff/TDv2'
+let g:netrw_dirhist_3='/Users/coder/init'
+let g:netrw_dirhist_4='/Users/coder/init/.vim'
+let g:netrw_dirhist_5='/Users/coder/init/.vim/ftdetect'
+let g:netrw_dirhist_6='/Users/coder/init/.vim'
