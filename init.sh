@@ -34,13 +34,16 @@ if [[ $platform == 'mac' ]]; then
     brew install git && brew install bash-completion
 elif [[ $platform == 'linux' ]]; then
     sudo apt-get install -y automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev
-    git clone git@github.com:ggreer/the_silver_searcher.git
-    ./the_silver_searcher/build.sh
-    cd the_silver_searcher/ && sudo make install && cd ../
+    git clone git@github.com:ggreer/the_silver_searcher.git ~/
+    cd ~/the_silver_searcher/ && ./build.sh && sudo make install && cd ~/
     sudo apt-get install git bash-completion
 fi
 
+git clone git@github.com:tmux-plugins/tpm.git ~/.tmux/plugins/tpm
 
+git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
+
+git clone git://github.com/altercation/vim-colors-solarized.git ~/.vim/bundle/vim-colors-solarized
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
