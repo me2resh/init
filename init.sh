@@ -29,10 +29,10 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
    platform='mac'
 fi
 
-if [[ $platform == 'linux' ]]; then
+if [[ $platform == 'mac' ]]; then
     brew install the_silver_searcher
     brew install git && brew install bash-completion
-elif [[ $platform == 'freebsd' ]]; then
+elif [[ $platform == 'linux' ]]; then
     sudo apt-get install -y automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev
     git clone git@github.com:ggreer/the_silver_searcher.git
     ./the_silver_searcher/build.sh
