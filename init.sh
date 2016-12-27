@@ -34,7 +34,7 @@ if [[ $platform == 'mac' ]]; then
     brew install git && brew install bash-completion
     brew install tmux
 elif [[ $platform == 'linux' ]]; then
-    sudo apt-get install -y automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev tmux git bash-completion
+    sudo apt-get install -y automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev tmux git bash-completion ctags silversearcher-ag
     git clone git@github.com:ggreer/the_silver_searcher.git ~/
     cd ~/the_silver_searcher/ && ./build.sh && sudo make install && cd ~/
 fi
