@@ -31,7 +31,7 @@ fi
 
 if [[ $platform == 'mac' ]]; then
     brew install the_silver_searcher
-    brew install git && brew install bash-completion
+    brew install git && brew install bash-completion && brew install coreutils
     brew install tmux
 elif [[ $platform == 'linux' ]]; then
     sudo apt-get install -y automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev tmux git bash-completion ctags silversearcher-ag
@@ -46,6 +46,8 @@ git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
 git clone git://github.com/altercation/vim-colors-solarized.git ~/.vim/bundle/vim-colors-solarized
 
 git clone git://github.com/drmad/tmux-git.git ~/.tmux-git
+
+git clone git://github.com/majutsushi/tagbar ~/.vim/bundle/tagbar
 
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install

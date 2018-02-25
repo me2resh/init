@@ -200,7 +200,8 @@ ffe () { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name end
 #   6.  NETWORKING
 #   ---------------------------
 
-alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
+#alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
+alias myip='dig +short myip.opendns.com @resolver1.opendns.com'                    # myip:         Public facing IP Address
 alias netCons='lsof -i'                             # netCons:      Show all open TCP/IP sockets
 alias flushDNS='dscacheutil -flushcache'            # flushDNS:     Flush out the DNS Cache
 alias lsock='sudo /usr/sbin/lsof -i -P'             # lsock:        Display open sockets
@@ -254,9 +255,11 @@ alias mountReadWrite='/sbin/mount -uw /'    # mountReadWrite:   For use when boo
 #   8.  WEB DEVELOPMENT
 #   ---------------------------------------
 
+# TODO Fix this alias
 alias apacheEdit='sudo edit /etc/httpd/httpd.conf'      # apacheEdit:       Edit httpd.conf
 alias apacheRestart='sudo apachectl graceful'           # apacheRestart:    Restart Apache
 alias editHosts='sudo edit /etc/hosts'                  # editHosts:        Edit /etc/hosts file
+# TODO Fix this alias
 alias herr='tail /var/log/httpd/error_log'              # herr:             Tails HTTP error logs
 alias apacheLogs="less +F /var/log/apache2/error_log"   # Apachelogs:   Shows apache error logs
 httpHeaders () { /usr/bin/curl -I -L $@ ; }             # httpHeaders:      Grabs headers from web page
