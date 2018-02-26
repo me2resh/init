@@ -31,7 +31,9 @@ fi
 
 if [[ $platform == 'mac' ]]; then
     brew install the_silver_searcher
-    brew install git && brew install bash-completion && brew install coreutils
+    brew install git
+    brew install bash-completion
+    brew install coreutils
     brew install tmux
 elif [[ $platform == 'linux' ]]; then
     sudo apt-get install -y automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev tmux git bash-completion ctags silversearcher-ag
