@@ -10,32 +10,55 @@ Follow the GUI prompts to finish installation.
 
 ## iTerm2
 - Download from https://iterm2.com and drag into `/Applications`.
+- Set Preferences → Appearance → Theme to **Minimal** for the clean chrome-less window.
+- Import the Snazzy palette (the script just copies the dynamic profile; color presets still need to be imported):
+  ```bash
+  curl -Ls https://raw.githubusercontent.com/sindresorhus/iterm2-snazzy/main/Snazzy.itermcolors > /tmp/Snazzy.itermcolors
+  open /tmp/Snazzy.itermcolors
+  ```
 - The script also copies `iterm/Default.json` into `~/Library/Application Support/iTerm2/DynamicProfiles`; select the "Default" profile inside iTerm after installation.
+- If you see Maximum Awesome’s Solarized reminder at the end of the bootstrap, ignore it and keep the Minimal + Snazzy setup.
 
 ## Homebrew
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-## Zsh & Oh My Zsh
+## Zsh, Oh My Zsh, zplug, and the pure prompt
 ```bash
-brew install zsh
+brew install zsh zplug  # on Linux without Homebrew: git clone https://github.com/zplug/zplug ~/.zplug
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 chsh -s "$(which zsh)"
-source ~/.zshrc
-```
+cat <<'EOF' > ~/.zshrc
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME=""
+plugins=(git)
+source "$ZSH/oh-my-zsh.sh"
 
-## Zsh plugins and themes
-```bash
-brew install wget
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-wget -P "$ZSH_CUSTOM/themes" https://gist.githubusercontent.com/me2resh/248b703b1cc56bcace2a688ce7e3e71b/raw/d1fa30e1cfb35b5833f1650c01ecdc2e0b730c5b/solus.zsh-theme
-```
-Set in `~/.zshrc`:
-```zsh
-ZSH_THEME="pygmalion"
-plugins=(git colored-man-pages colorize pip python brew macos zsh-syntax-highlighting zsh-autosuggestions virtualenv)
+detect_zplug_home() {
+  if command -v brew >/dev/null 2>&1; then
+    local p="$(brew --prefix 2>/dev/null)/opt/zplug"
+    [ -d "$p" ] && { echo "$p"; return; }
+  fi
+  [ -d "$HOME/.zplug" ] && echo "$HOME/.zplug"
+}
+
+ZPLUG_HOME="${ZPLUG_HOME:-$(detect_zplug_home)}"
+if [ -n "$ZPLUG_HOME" ] && [ -f "$ZPLUG_HOME/init.zsh" ]; then
+  export ZPLUG_HOME
+  source "$ZPLUG_HOME/init.zsh"
+  zplug "mafredri/zsh-async", from:github
+  zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+  zplug "sindresorhus/pure", use:async.zsh, from:github
+  zplug "zsh-users/zsh-syntax-highlighting", as:plugin, defer:2
+  zplug "zsh-users/zsh-autosuggestions", as:plugin, defer:2
+  if ! zplug check --verbose; then
+    zplug install
+  fi
+  zplug load
+fi
+EOF
+source ~/.zshrc
 ```
 
 ## fzf & jq

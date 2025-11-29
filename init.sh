@@ -12,6 +12,10 @@ elif [[ "$unamestr" == 'Darwin' ]]; then
     platform='mac'
 fi
 
+if [[ $platform == 'mac' ]]; then
+    export NONINTERACTIVE=1
+fi
+
 info() {
     printf '[init] %s\n' "$*"
 }
@@ -36,30 +40,6 @@ ensure_shell_registered() {
     if ! grep -qx "$shell_path" /etc/shells 2>/dev/null; then
         info "Adding $shell_path to /etc/shells"
         run_with_sudo sh -c "echo '$shell_path' >> /etc/shells"
-    fi
-}
-
-sed_inline() {
-    local script="$1"
-    local target="$2"
-    if [[ $platform == 'mac' ]]; then
-        sed -i '' -e "$script" "$target"
-    else
-        sed -i -e "$script" "$target"
-    fi
-}
-
-replace_or_append() {
-    local file="$1"
-    local pattern="$2"
-    local line="$3"
-    touch "$file"
-    if grep -Eq "$pattern" "$file"; then
-        sed_inline "s|$pattern|$line|" "$file"
-    else
-        printf '
-%s
-' "$line" >> "$file"
     fi
 }
 
@@ -175,6 +155,9 @@ if 'Profiles' not in data:
 dest.write_text(json.dumps(data, indent=2))
 PY
     info "Installed iTerm dynamic profile at $profile_dest. Select 'Default' inside iTerm to apply it."
+    info "For the minimalist setup, set Preferences → Appearance → Theme to 'Minimal' and import Snazzy:"
+    info "  curl -Ls https://raw.githubusercontent.com/sindresorhus/iterm2-snazzy/main/Snazzy.itermcolors > /tmp/Snazzy.itermcolors"
+    info "  open /tmp/Snazzy.itermcolors"
 }
 
 ensure_linux_packages() {
@@ -207,7 +190,28 @@ install_macos_packages() {
     ensure_brew_formula vim
     ensure_brew_formula ruby
     ensure_brew_formula jq
+    ensure_brew_formula zplug
     ensure_brew_cask iterm2
+}
+
+install_zplug_manager() {
+    if [[ $platform == 'mac' ]]; then
+        return
+    fi
+    local zplug_dir="$HOME/.zplug"
+    if [ -d "$zplug_dir/.git" ]; then
+        git -C "$zplug_dir" pull --ff-only
+    elif [ ! -d "$zplug_dir" ]; then
+        git clone https://github.com/zplug/zplug "$zplug_dir"
+    fi
+}
+
+bootstrap_zplug_plugins() {
+    if ! command -v zsh >/dev/null 2>&1; then
+        return
+    fi
+    zsh -lc 'if type zplug >/dev/null 2>&1; then zplug check --verbose || zplug install; fi' || \
+        warn "Unable to initialize zplug plugins automatically"
 }
 
 install_zsh_stack() {
@@ -228,30 +232,8 @@ install_zsh_stack() {
         git clone https://github.com/ohmyzsh/ohmyzsh.git "$omz_dir"
     fi
 
-    if [ ! -f "$HOME/.zshrc" ]; then
-        cp "$omz_dir/templates/zshrc.zsh-template" "$HOME/.zshrc"
-    fi
-
-    local zsh_custom="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-    mkdir -p "$zsh_custom/plugins" "$zsh_custom/themes"
-
-    clone_or_update https://github.com/zsh-users/zsh-autosuggestions "$zsh_custom/plugins/zsh-autosuggestions"
-    clone_or_update https://github.com/zsh-users/zsh-syntax-highlighting.git "$zsh_custom/plugins/zsh-syntax-highlighting"
-
-    local solus_theme="$zsh_custom/themes/solus.zsh-theme"
-    if [ ! -f "$solus_theme" ]; then
-        if command -v wget >/dev/null 2>&1; then
-            info "Downloading Solus zsh theme..."
-            wget -q -O "$solus_theme" "https://gist.githubusercontent.com/me2resh/248b703b1cc56bcace2a688ce7e3e71b/raw/d1fa30e1cfb35b5833f1650c01ecdc2e0b730c5b/solus.zsh-theme"
-        else
-            warn "wget not available; skipping Solus theme download."
-        fi
-    else
-        info "Solus theme already present."
-    fi
-
-    replace_or_append "$HOME/.zshrc" '^ZSH_THEME=.*' 'ZSH_THEME="pygmalion"'
-    replace_or_append "$HOME/.zshrc" '^plugins=.*' 'plugins=(git colored-man-pages colorize pip python brew macos zsh-syntax-highlighting zsh-autosuggestions virtualenv)'
+    install_zplug_manager
+    bootstrap_zplug_plugins
 }
 
 install_fzf_tools() {
@@ -373,6 +355,7 @@ install_vim_tooling() {
         clone_or_update https://github.com/square/maximum-awesome.git "$max_dir"
         if command -v rake >/dev/null 2>&1; then
             (cd "$max_dir" && rake)
+            info "Maximum Awesome installed. Ignore its Solarized reminder and follow the Snazzy instructions in the README."
         else
             warn "rake not found; skipping Maximum Awesome bootstrap"
         fi

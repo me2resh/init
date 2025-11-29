@@ -3,6 +3,7 @@
 Bootstrap dotfiles and development tooling for macOS or Debian/Ubuntu with a single command.
 
 ## What it does
+Automates almost everything described in <a href="https://www.me2resh.com/posts/2020/05/04/my-terminal-setup-on-mac-os.html" target="_blank" rel="noopener noreferrer">My Terminal Setup on macOS</a>:
 This repo automates almost everything described in <a href="https://www.me2resh.com/posts/2020/05/04/my-terminal-setup-on-mac-os.html" target="_blank" rel="noopener noreferrer">My Terminal Setup on macOS</a>:
 - Copies the dotfiles in this repo into `$HOME`, backing up any existing files.
 - Installs package prerequisites (Xcode CLT/Homebrew on macOS, apt packages on Debian/Ubuntu).
@@ -19,7 +20,7 @@ This repo automates almost everything described in <a href="https://www.me2resh.
   - [bash-completion](https://github.com/scop/bash-completion)
   - [Ruby](https://www.ruby-lang.org/)
   - [iTerm2](https://iterm2.com/) + bundled profile (macOS)
-- Sets up zsh/Oh My Zsh with the pygmalion theme, Solus colors, and useful plugins.
+- Sets up zsh/Oh My Zsh with the [pure](https://github.com/sindresorhus/pure) prompt via [zplug](https://github.com/zplug/zplug) (autosuggestions + syntax highlighting included).
 - Configures fzf key bindings, git defaults, SSH keys, tmux plugins, and other editor tooling.
 
 ## Usage
@@ -31,9 +32,14 @@ bash init.sh            # INSTALL_MAXIMUM_AWESOME=false bash init.sh to skip Max
 When the script finishes, open a new terminal (or `exec zsh`) so the new shell config takes effect.
 
 ### macOS-specific notes
-- You’ll be prompted to install Xcode Command Line Tools and to allow Homebrew installs.
-- iTerm2 is installed via cask (skipped if already present) and the bundled profile is placed under `~/Library/Application Support/iTerm2/DynamicProfiles` so you can select it under Preferences → Profiles.
+- You’ll be prompted to install Xcode Command Line Tools and to allow Homebrew installs (the script forces Homebrew into non-interactive mode to minimize prompts, but you may still be asked for your password once).
+- iTerm2 is installed via cask (skipped if already present) and the bundled profile is dropped into `~/Library/Application Support/iTerm2/DynamicProfiles`. For the minimalist look from the blog post, set Preferences → Appearance → Theme to **Minimal** and import the Snazzy palette:
+  ```bash
+  curl -Ls https://raw.githubusercontent.com/sindresorhus/iterm2-snazzy/main/Snazzy.itermcolors > /tmp/Snazzy.itermcolors
+  open /tmp/Snazzy.itermcolors
+  ```
 - Maximum Awesome runs by default; rerun with `INSTALL_MAXIMUM_AWESOME=false bash init.sh` if you prefer to keep your existing vim/tmux configs.
+- Maximum Awesome’s `rake` still prints a Solarized reminder—ignore it and keep the Minimal + Snazzy setup above.
 
 ### Ubuntu (Debian-based) notes
 - The script runs `sudo apt-get update` and installs all dependencies listed in `ensure_linux_packages()`. You’ll be prompted for sudo once.
