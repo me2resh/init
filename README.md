@@ -3,7 +3,7 @@
 Bootstrap dotfiles and development tooling for macOS or Debian/Ubuntu with a single command.
 
 ## What it does
-This repo automates almost everything described in [My Terminal Setup on macOS](https://www.me2resh.com/posts/2020/05/04/my-terminal-setup-on-mac-os.html):
+This repo automates almost everything described in <a href="https://www.me2resh.com/posts/2020/05/04/my-terminal-setup-on-mac-os.html" target="_blank" rel="noopener noreferrer">My Terminal Setup on macOS</a>:
 - Copies the dotfiles in this repo into `$HOME`, backing up any existing files.
 - Installs package prerequisites (Xcode CLT/Homebrew on macOS, apt packages on Debian/Ubuntu).
 - Installs CLI tools and desktop apps:
@@ -29,6 +29,15 @@ cd ~/init
 bash init.sh            # INSTALL_MAXIMUM_AWESOME=false bash init.sh to skip Maximum Awesome on macOS
 ```
 When the script finishes, open a new terminal (or `exec zsh`) so the new shell config takes effect.
+
+### macOS-specific notes
+- You’ll be prompted to install Xcode Command Line Tools and to allow Homebrew installs.
+- iTerm2 is installed via cask (skipped if already present) and the bundled profile is placed under `~/Library/Application Support/iTerm2/DynamicProfiles` so you can select it under Preferences → Profiles.
+- Maximum Awesome runs by default; rerun with `INSTALL_MAXIMUM_AWESOME=false bash init.sh` if you prefer to keep your existing vim/tmux configs.
+
+### Ubuntu (Debian-based) notes
+- The script runs `sudo apt-get update` and installs all dependencies listed in `ensure_linux_packages()`. You’ll be prompted for sudo once.
+- Xcode/iTerm steps are skipped; otherwise the dotfile/zsh/fzf/git/Vim setup is the same.
 
 ## Safe dry run
 ```bash
