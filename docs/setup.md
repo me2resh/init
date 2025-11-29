@@ -38,10 +38,11 @@ ZSH_THEME="pygmalion"
 plugins=(git colored-man-pages colorize pip python brew macos zsh-syntax-highlighting zsh-autosuggestions virtualenv)
 ```
 
-## fzf
+## fzf & jq
 ```bash
 brew install fzf
 $(brew --prefix)/opt/fzf/install --all --no-update-rc
+brew install jq
 ```
 
 ## Git & GitHub

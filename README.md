@@ -5,9 +5,21 @@ Bootstrap dotfiles and development tooling for macOS or Debian/Ubuntu with a sin
 ## What it does
 - Copies the dotfiles in this repo into `$HOME`, backing up any existing files.
 - Installs package prerequisites (Xcode CLT/Homebrew on macOS, apt packages on Debian/Ubuntu).
-- Installs CLI tools (ag, git, tmux, zsh, wget, fzf, vim, ruby, bash-completion) and desktop tooling (iTerm2 + bundled profile on macOS).
+- Installs CLI tools and desktop apps:
+  - [The Silver Searcher (ag)](https://github.com/ggreer/the_silver_searcher)
+  - [Git](https://git-scm.com/)
+  - [tmux](https://github.com/tmux/tmux)
+  - [zsh](https://www.zsh.org/) + [Oh My Zsh](https://ohmyz.sh/)
+  - [wget](https://www.gnu.org/software/wget/)
+  - [fzf](https://github.com/junegunn/fzf) with key bindings/completions
+  - [jq](https://stedolan.github.io/jq/)
+  - [Vim](https://www.vim.org/) and [Ultimate vimrc](https://github.com/amix/vimrc)
+  - [Maximum Awesome](https://github.com/square/maximum-awesome) (macOS by default, optional via `INSTALL_MAXIMUM_AWESOME`)
+  - [bash-completion](https://github.com/scop/bash-completion)
+  - [Ruby](https://www.ruby-lang.org/)
+  - [iTerm2](https://iterm2.com/) + bundled profile (macOS)
 - Sets up zsh/Oh My Zsh with the pygmalion theme, Solus colors, and useful plugins.
-- Installs fzf key bindings, configures global git + SSH keys, and bootstraps Vim/tmux plugins (Ultimate vimrc everywhere, Maximum Awesome by default on macOS).
+- Configures fzf key bindings, git defaults, SSH keys, tmux plugins, and other editor tooling.
 
 ## Usage
 ```bash

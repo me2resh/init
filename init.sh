@@ -183,7 +183,7 @@ ensure_linux_packages() {
     fi
     local packages=(
         automake pkg-config libpcre3-dev zlib1g-dev liblzma-dev 
-        tmux git bash-completion exuberant-ctags silversearcher-ag zsh wget vim fzf curl openssh-client ruby-full
+        tmux git bash-completion exuberant-ctags silversearcher-ag zsh wget vim fzf curl openssh-client ruby-full jq
     )
     info "Updating apt package index..."
     run_with_sudo apt-get update
@@ -206,6 +206,7 @@ install_macos_packages() {
     ensure_brew_formula fzf
     ensure_brew_formula vim
     ensure_brew_formula ruby
+    ensure_brew_formula jq
     ensure_brew_cask iterm2
 }
 
