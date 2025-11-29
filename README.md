@@ -3,6 +3,7 @@
 Bootstrap dotfiles and development tooling for macOS or Debian/Ubuntu with a single command.
 
 ## What it does
+This repo automates almost everything described in [My Terminal Setup on macOS](https://www.me2resh.com/posts/2020/05/04/my-terminal-setup-on-mac-os.html):
 - Copies the dotfiles in this repo into `$HOME`, backing up any existing files.
 - Installs package prerequisites (Xcode CLT/Homebrew on macOS, apt packages on Debian/Ubuntu).
 - Installs CLI tools and desktop apps:
