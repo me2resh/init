@@ -91,7 +91,8 @@ ensure_homebrew() {
     fi
     if ! command -v brew >/dev/null 2>&1; then
         info "Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        # Unset NONINTERACTIVE so the installer can prompt for sudo password
+        NONINTERACTIVE= /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     else
         info "Homebrew already installed."
     fi
