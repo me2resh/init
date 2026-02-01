@@ -2,55 +2,55 @@
 id: AgDR-0001
 timestamp: 2026-02-01T21:42:00Z
 agent: claude
-model: claude-sonnet-4-5-20250929
+model: claude-opus-4-5-20251101
 trigger: user-prompt
 status: executed
 ---
 
-# Select tmux plugins for enhanced functionality
+# Simplify tmux plugins to essentials only
 
-> In the context of improving the init project's tmux configuration, facing disabled mouse support and missing network monitoring, I decided to adopt tmux-better-mouse-mode, tmux-net-speed, tmux-fuzzback, tmux-continuum, and tmux-copycat plugins to achieve better user experience and productivity, accepting the dependency on external plugin maintenance.
+> In the context of improving the init project's tmux configuration, facing plugin bloat with 11 plugins, I decided to reduce to 5 essential plugins (tpm, sensible, yank, resurrect, continuum) to achieve a leaner, more maintainable setup, accepting the loss of niche features rarely used in practice.
 
 ## Context
 
-- Current tmux config has mouse support explicitly disabled (`set -g mouse off`)
-- No network bandwidth monitoring despite having CPU/memory stats
-- Limited scrollback search capabilities
-- Manual session persistence without auto-save
-- Basic copy/paste without pattern matching for URLs, IPs, file paths
+- Current tmux config had accumulated 11 plugins
+- Many plugins (net-speed, fuzzback, copycat, better-mouse-mode) add complexity for features rarely used
+- More plugins = more dependencies, slower startup, more things to break
+- Native tmux mouse support (`set -g mouse on`) is sufficient for most use cases
 
 ## Options Considered
 
 | Option | Pros | Cons |
 |--------|------|------|
-| Native tmux only | No dependencies, always compatible | Limited features, verbose config, missing advanced functionality |
-| TPM + curated plugins | Rich feature set, community maintained, modular | External dependencies, potential compatibility issues |
-| Custom scripts | Full control, tailored to needs | High maintenance burden, reinventing wheel |
+| Keep all 11 plugins | Maximum features, already configured | Bloat, slow startup, maintenance burden, rarely-used features |
+| **Reduce to 5 essentials** | Lean, fast, maintainable, covers 90% of use cases | Lose fuzzy search, network stats, pattern matching |
+| Native tmux only | Zero dependencies | Lose session persistence, clipboard integration |
 
 ## Decision
 
-Chosen: **TPM + curated plugins**, because:
-- Leverages mature, well-tested solutions from tmux-plugins organization
-- Modular approach allows enabling/disabling features easily
-- Active community maintenance and updates
-- TPM already integrated in current setup
-- Plugins selected based on popularity, active maintenance, and specific needs
+Chosen: **Reduce to 5 essentials**, because:
+- tpm: Required for plugin management
+- tmux-sensible: Universal defaults everyone needs
+- tmux-yank: System clipboard integration - essential on macOS
+- tmux-resurrect: Session persistence across restarts - essential
+- tmux-continuum: Auto-saves resurrect - set and forget
 
-**Selected plugins:**
-- `NHDaly/tmux-better-mouse-mode` - 1.3k stars, addresses scroll-without-pane-change usecase
-- `tmux-plugins/tmux-net-speed` - Official plugin, simple network monitoring
-- `roosta/tmux-fuzzback` - Fuzzy search integration for scrollback
-- `tmux-plugins/tmux-continuum` - Auto-save companion to existing tmux-resurrect
-- `tmux-plugins/tmux-copycat` - Predefined search patterns (URLs, IPs, files)
-- `tmux-plugins/tmux-pain-control` - Consistent navigation keybindings
+**Removed plugins:**
+- `tmux-better-mouse-mode`: Native `set -g mouse on` is sufficient
+- `tmux-net-speed`: Rarely need network stats in status bar
+- `tmux-fuzzback`: Cool but rarely used - how often do you fuzzy-search scrollback?
+- `tmux-copycat`: Pattern search is nice but grep works
+- `tmux-pain-control`: Only useful if you don't know pane bindings
+- `tmux-mem-cpu-load`: Nice but Activity Monitor/htop when needed
 
 ## Consequences
 
-- Increased startup time due to plugin loading (minimal, <100ms)
-- Dependency on plugin authors for updates and compatibility
-- Need to document plugin installation for new users
-- Better UX: mouse support, network stats, fuzzy search, auto-save
-- Reduced manual config for common patterns
+- Faster tmux startup (fewer plugins to load)
+- Less maintenance burden
+- Simpler config to understand and debug
+- Lose network stats in status bar (can use htop/btop when needed)
+- Lose fuzzy scrollback search (use grep/less instead)
+- Keep the features that matter: session persistence, clipboard, sane defaults
 
 ## Artifacts
 
